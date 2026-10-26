@@ -52,9 +52,7 @@ count_matches() {  # <extended-regex> <file>
 
 fail_verify() {  # <message>
   local msg=$1
-  if [ -n "${GITHUB_ACTIONS:-}" ]; then
-    printf '::error::%s\n' "$msg"
-  fi
+  printf '::error::%s\n' "$msg"
   printf 'fm-test-tap-verify: %s\n' "$msg" >&2
   exit 1
 }
@@ -92,10 +90,7 @@ case "$PLANNED" in
   ''|*[!0-9]*) PLANNED=0 ;;
 esac
 
-LABEL=$SCRIPT
-case "$SCRIPT" in
-  */*) LABEL=${SCRIPT##*/} ;;
-esac
+LABEL=${SCRIPT##*/}
 
 if [ "$STATUS" -ne 0 ]; then
   fail_verify "$LABEL exited $STATUS (planned $PLANNED, ok $OK_COUNT, not ok $NOT_OK_COUNT, complete $COMPLETE_COUNT)"

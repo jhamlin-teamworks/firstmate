@@ -34,6 +34,8 @@ printf "FM_TEST_COMPLETE\n"
   assert_contains "$out" "ok - good" "the helper hid the suite's ok line"
   assert_contains "$out" "1 planned, 1 ok, complete, exit 0" \
     "the helper did not confirm a matching plan"
+  assert_not_contains "$out" "::error::" \
+    "a passing suite must not print ::error::: $out"
   pass "a complete matching suite passes"
 }
 
@@ -141,14 +143,16 @@ EOF
   pass "a test function that exits 0 before later tests fail completeness"
 }
 
-test_github_actions_error_annotation() {
+test_failure_prints_error_annotation() {
   local suite out rc=0
   suite="$TMP_ROOT/gha.sh"
   write_suite "$suite" 'exit 0'
-  out=$(GITHUB_ACTIONS=true run_verify "$suite") || rc=$?
+  # Capture the helper's stdout and stderr so a passing self-test does not
+  # leak ::error:: into the CI log.
+  out=$(run_verify "$suite") || rc=$?
   [ "$rc" -ne 0 ] || fail "a suite with no plan must fail: $out"
-  assert_contains "$out" "::error::" "GITHUB_ACTIONS must emit an annotation: $out"
-  pass "GitHub Actions gets an error annotation on a completeness failure"
+  assert_contains "$out" "::error::" "a completeness failure must emit an error annotation: $out"
+  pass "a completeness failure prints an error annotation"
 }
 
 test_correct_suite_passes
@@ -158,4 +162,4 @@ test_nonzero_exit_fails
 test_ok_count_mismatch_fails
 test_fm_test_run_declares_plan_from_names
 test_fm_test_run_early_function_exit_fails
-test_github_actions_error_annotation
+test_failure_prints_error_annotation
