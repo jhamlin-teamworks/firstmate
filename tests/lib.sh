@@ -108,19 +108,14 @@ pass() {
 }
 
 # fm_test_run <test-function>...
-# Print a TAP plan 1..N derived from the function names, run each function
-# (each must emit exactly one `ok - ` line via pass), then print
+# Print a TAP plan 1..N derived from the function names (N is $#), run each
+# function (each must emit exactly one `ok - ` line via pass), then print
 # FM_TEST_COMPLETE. Adding a test is adding a name to this call; N is not a
-# separately maintained numeral. FM_TEST_ONLY, when set, replaces the name
-# list so a focused run still plans against what it executes.
+# separately maintained numeral. The names given are the names run.
 # bin/fm-test-tap-verify.sh is the completeness checker the stock macOS Bash
 # job uses against that plan and marker.
 fm_test_run() {
   local name kind
-  if [ -n "${FM_TEST_ONLY:-}" ]; then
-    # shellcheck disable=SC2086
-    set -- $FM_TEST_ONLY
-  fi
   [ "$#" -gt 0 ] || fail "fm_test_run: no tests registered"
   printf '1..%s\n' "$#"
   while [ "$#" -gt 0 ]; do

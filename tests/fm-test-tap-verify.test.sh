@@ -18,7 +18,7 @@ write_suite() {  # <path> <body>
 }
 
 run_verify() {  # <suite> -> prints merged output; returns helper status
-  "$VERIFY" --bash "$BASH" "$1" 2>&1
+  "$BASH" "$VERIFY" "$1" 2>&1
 }
 
 test_correct_suite_passes() {

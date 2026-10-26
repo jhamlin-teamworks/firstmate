@@ -10,11 +10,10 @@
 # test function names. That prints a TAP plan `1..N` (N is the number of
 # names, so adding a test is adding a name, not bumping a numeral), runs
 # each function (each must emit exactly one `ok - ` line), then prints
-# `FM_TEST_COMPLETE`. FM_TEST_ONLY, when set, replaces the name list so a
-# focused run still plans against what it actually executes.
+# `FM_TEST_COMPLETE`.
 #
-# This script runs TEST_SCRIPT under INTERPRETER (default: the Bash that is
-# running this helper) and verifies:
+# This script runs TEST_SCRIPT under the Bash that is running this helper
+# and verifies:
 #   - the process exit status is 0
 #   - output contains exactly one TAP plan line `1..N` with N >= 1
 #   - output contains exactly one `FM_TEST_COMPLETE` line
@@ -27,7 +26,7 @@
 # used to provide.
 #
 # Usage:
-#   fm-test-tap-verify.sh [--bash INTERPRETER] TEST_SCRIPT
+#   fm-test-tap-verify.sh TEST_SCRIPT
 #   fm-test-tap-verify.sh -h|--help
 #
 # The suite's stdout and stderr are replayed unchanged, then a one-line
@@ -36,12 +35,12 @@ set -eu
 
 usage() {
   cat <<'EOF'
-Usage: fm-test-tap-verify.sh [--bash INTERPRETER] TEST_SCRIPT
+Usage: fm-test-tap-verify.sh TEST_SCRIPT
        fm-test-tap-verify.sh -h|--help
 
-Run TEST_SCRIPT and require a TAP plan 1..N, N `ok - ` lines, zero
-`not ok` lines, FM_TEST_COMPLETE, and exit status 0. INTERPRETER defaults
-to the Bash running this helper.
+Run TEST_SCRIPT under the Bash running this helper and require a TAP
+plan 1..N, N `ok - ` lines, zero `not ok` lines, FM_TEST_COMPLETE, and
+exit status 0.
 EOF
 }
 
@@ -71,11 +70,6 @@ while [ "$#" -gt 0 ]; do
     -h|--help)
       usage
       exit 0
-      ;;
-    --bash)
-      [ "$#" -ge 2 ] || { usage >&2; exit 2; }
-      INTERPRETER=$2
-      shift 2
       ;;
     --)
       shift

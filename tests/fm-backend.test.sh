@@ -1400,18 +1400,11 @@ test_spawn_autodetect_nesting_resolves_tmux_silently() {
 
 # CI's stock macOS Bash lane sets FM_TEST_STOCK_BASH=1 to run just the adapter
 # precheck pair. Adding another stock-bash case means adding it to this list,
-# not to ci.yml. The former FM_TEST_ONLY name still expands to both cases.
-if [ -n "${FM_TEST_STOCK_BASH:-}" ] ||
-   [ "${FM_TEST_ONLY:-}" = test_backend_source_requires_adapter_file ]; then
-  unset FM_TEST_ONLY
+# not to ci.yml.
+if [ -n "${FM_TEST_STOCK_BASH:-}" ]; then
   fm_test_run \
     test_backend_source_requires_missing_adapter_file \
     test_backend_source_requires_unreadable_adapter_file
-  exit 0
-fi
-if [ -n "${FM_TEST_ONLY:-}" ]; then
-  # shellcheck disable=SC2086
-  fm_test_run $FM_TEST_ONLY
   exit 0
 fi
 

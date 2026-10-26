@@ -3915,7 +3915,7 @@ test_a_retained_refusal_repeats_its_wake_rather_than_a_new_one() {
 # CI's stock macOS Bash lane sets FM_TEST_STOCK_BASH=1 to run just the bash-3.2
 # empty-lock register regression. The rest of this file is not a 3.2 snapshot
 # suite. Adding another stock-bash case means adding it to this list, not to
-# ci.yml. FM_TEST_ONLY still runs a focused local case through the same plan.
+# ci.yml.
 if [ -n "${FM_TEST_STOCK_BASH:-}" ]; then
   fm_test_run test_first_register_succeeds_with_empty_lock_list_under_bash32
   exit 0
