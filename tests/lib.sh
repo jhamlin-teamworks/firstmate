@@ -121,9 +121,6 @@ fm_test_run() {
   while [ "$#" -gt 0 ]; do
     name=$1
     shift
-    case "$name" in
-      ''|*[!a-zA-Z0-9_]*) fail "fm_test_run: invalid test name: $name" ;;
-    esac
     kind=$(type -t "$name" 2>/dev/null || true)
     [ "$kind" = function ] || fail "fm_test_run: $name is not a function"
     "$name"

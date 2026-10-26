@@ -47,9 +47,6 @@ EOF
 count_matches() {  # <extended-regex> <file>
   local pattern=$1 file=$2 n
   n=$(grep -c -E "$pattern" "$file" 2>/dev/null) || n=0
-  case "$n" in
-    ''|*[!0-9]*) n=0 ;;
-  esac
   printf '%s\n' "$n"
 }
 
@@ -72,13 +69,6 @@ if [ "$#" -ne 1 ]; then
   exit 2
 fi
 
-case "$1" in
-  -*)
-    printf 'fm-test-tap-verify: unknown option: %s\n' "$1" >&2
-    usage >&2
-    exit 2
-    ;;
-esac
 SCRIPT=$1
 [ -f "$SCRIPT" ] || fail_verify "not a file: $SCRIPT"
 
