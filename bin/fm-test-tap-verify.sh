@@ -62,43 +62,31 @@ fail_verify() {  # <message>
   exit 1
 }
 
-INTERPRETER=${BASH:-bash}
-SCRIPT=
+if [ "${1:-}" = "-h" ] || [ "${1:-}" = "--help" ]; then
+  usage
+  exit 0
+fi
 
-while [ "$#" -gt 0 ]; do
-  case "$1" in
-    -h|--help)
-      usage
-      exit 0
-      ;;
-    --)
-      shift
-      break
-      ;;
-    -*)
-      printf 'fm-test-tap-verify: unknown option: %s\n' "$1" >&2
-      usage >&2
-      exit 2
-      ;;
-    *)
-      [ -z "$SCRIPT" ] || { usage >&2; exit 2; }
-      SCRIPT=$1
-      shift
-      ;;
-  esac
-done
+if [ "$#" -ne 1 ]; then
+  usage >&2
+  exit 2
+fi
 
-[ "$#" -eq 0 ] || { usage >&2; exit 2; }
-[ -n "$SCRIPT" ] || { usage >&2; exit 2; }
+case "$1" in
+  -*)
+    printf 'fm-test-tap-verify: unknown option: %s\n' "$1" >&2
+    usage >&2
+    exit 2
+    ;;
+esac
+SCRIPT=$1
 [ -f "$SCRIPT" ] || fail_verify "not a file: $SCRIPT"
-[ -x "$INTERPRETER" ] || command -v "$INTERPRETER" >/dev/null 2>&1 \
-  || fail_verify "interpreter not found: $INTERPRETER"
 
 OUT=$(mktemp "${TMPDIR:-/tmp}/fm-test-tap-verify.XXXXXX") || exit 1
 trap 'rm -f "$OUT"' EXIT
 
 set +e
-"$INTERPRETER" "$SCRIPT" >"$OUT" 2>&1
+"$BASH" "$SCRIPT" >"$OUT" 2>&1
 STATUS=$?
 set -e
 

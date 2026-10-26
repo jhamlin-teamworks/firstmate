@@ -1407,6 +1407,10 @@ if [ -n "${FM_TEST_STOCK_BASH:-}" ]; then
     test_backend_source_requires_unreadable_adapter_file
   exit 0
 fi
+if [ -n "${FM_TEST_ONLY:-}" ]; then
+  "$FM_TEST_ONLY"
+  exit 0
+fi
 
 backend_base_ref >/dev/null
 

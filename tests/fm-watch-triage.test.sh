@@ -7316,8 +7316,7 @@ if [ -n "${FM_TEST_STOCK_BASH:-}" ]; then
   exit 0
 fi
 if [ -n "${FM_TEST_ONLY:-}" ]; then
-  # shellcheck disable=SC2086
-  fm_test_run $FM_TEST_ONLY
+  "$FM_TEST_ONLY"
   exit 0
 fi
 

@@ -115,9 +115,7 @@ FM_TEST_ONLY=test_failed_work_on_pr_merged_promise_delivers_honest_outcome bash 
 ```
 
 ```
-1..1
 ok - failed work on a pr-merged promise delivers its honest outcome exactly once
-FM_TEST_COMPLETE
 ```
 
 It binds a `pr-merged` promised final to work that reports `outcome=failed`, reconciles that accepted relation to `ready`, posts the recorded failure text once to the original request, and verifies that the obligation closes.
