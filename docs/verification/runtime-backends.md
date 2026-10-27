@@ -934,6 +934,16 @@ Overriding `FM_COMPOSER_LEFTBAR_FOOTER_RE` to a pattern that cannot match puts t
 On the full-pane cursorless read both v2 captures answer `unknown` rather than `empty`, because opencode 2 draws a status rail below the composer's floor row and the strict staleness rule refuses the left-bar candidate - the same deferral the 1.18.31 full pane shows, and a safe one.
 After an OpenCode upgrade, rerun the live guard's `opencode-auto` arm and refresh this record: the `auto` cell's exact rendering is pinned to observed releases, and the TUI source that names it is a vendor surface a release can move.
 
+Follow-up live validation on 2026-10-27 was driven externally by the supervising firstmate, not by the pipeline run, against real opencode 2.1.4 panes read through `fm_backend_composer_state` (`bin/fm-backend.sh`) sourced from this worktree.
+The parked worker pane `firstmate:fm-firstmate-nomistakes-reraise-7800`, idle and rendering the autoaccept cell, read `empty`, an idle scratch tmux pane without the cell read `empty`, and text typed above the footer read `pending`.
+
+```sh
+. bin/fm-backend.sh
+fm_backend_composer_state tmux firstmate:fm-firstmate-nomistakes-reraise-7800   # empty - idle, autoaccept cell present
+fm_backend_composer_state tmux <firstmate scratch idle pane, no autoaccept>     # empty
+fm_backend_composer_state tmux <pane with typed text above the footer>          # pending
+```
+
 ### Grok approval-titled bottom border
 
 Recorded 2026-10-01; the shape was first observed on Grok 1.0.44 on 2026-09-29, on an idle composer the classifier then read as `unknown`. The classifier update was exercised again on 2026-10-15 against Grok 1.0.62; see the live-validation evidence below.
